@@ -18,3 +18,11 @@ IF (
     "men", "women"
 )
 AS "winner_of_likes";
+
+-- Вывести всех пользователей, которые не отправляли сообщения.
+SELECT users.id, firstname, lastname FROM users
+WHERE users.id  NOT IN 
+	(SELECT DISTINCT from_user_id FROM messages);    
+    
+    
+    
