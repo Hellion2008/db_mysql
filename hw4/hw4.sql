@@ -1,5 +1,20 @@
 USE seminar4; 
 -- Подсчитать общее количество лайков, которые получили пользователи младше 12 лет.
-SELECT p.user_id, p.birthday 
-FROM `profiles` AS p
+SELECT SUM(likes.media_id) FROM likes
+JOIN `profiles` AS p ON likes.user_id = p.user_id
 WHERE YEAR(NOW()) - YEAR(p.birthday) < 12;
+
+-- Определить кто больше поставил лайков (всего): мужчины или женщины
+SELECT 
+IF (
+	(SELECT SUM(likes.media_id)  AS "winner_of_likes" 
+	FROM likes
+	JOIN `profiles` AS p ON likes.user_id = p.user_id
+	WHERE p.gender = 'm') > 
+    (SELECT SUM(likes.media_id)  AS "winner_of_likes" 
+	FROM likes
+	JOIN `profiles` AS p ON likes.user_id = p.user_id
+	WHERE p.gender = 'f'), 
+    "men", "women"
+)
+AS "winner_of_likes";
