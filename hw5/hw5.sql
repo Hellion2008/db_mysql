@@ -7,7 +7,18 @@ CREATE VIEW young_users AS
 	JOIN profiles ON users.id = profiles.user_id
    WHERE YEAR(NOW()) - YEAR(profiles.birthday) <= 20 );
    
-   SELECT * FROM young_users;
+SELECT * FROM young_users;
+   
+/*Найдите кол-во, отправленных сообщений каждым пользователем и выведите
+ранжированный список пользователей, указав имя и фамилию пользователя, количество
+отправленных сообщений и место в рейтинге (первое место у пользователя с максимальным
+количеством сообщений) . (используйте DENSE_RANK)*/
+SELECT  DISTINCT users.id, firstname, lastname, 
+COUNT(body) OVER (PARTITION BY lastname) AS cnt,
+DENSE_RANK() OVER () AS 'rank'
+FROM users
+LEFT JOIN messages ON users.id = messages.from_user_id
+ORDER BY cnt DESC;
    
 /*Выберите все сообщения, отсортируйте сообщения по возрастанию даты отправления
 (created_at) и найдите разницу дат отправления между соседними сообщениями, получившегося
