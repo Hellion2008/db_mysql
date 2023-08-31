@@ -13,12 +13,12 @@ SELECT * FROM young_users;
 ранжированный список пользователей, указав имя и фамилию пользователя, количество
 отправленных сообщений и место в рейтинге (первое место у пользователя с максимальным
 количеством сообщений) . (используйте DENSE_RANK)*/
-SELECT  DISTINCT users.id, firstname, lastname, 
-COUNT(body) OVER (PARTITION BY lastname) AS cnt,
-DENSE_RANK() OVER () AS 'rank'
+SELECT users.id, firstname, lastname, 
+COUNT(body) AS cnt,
+DENSE_RANK() OVER (ORDER BY COUNT(body) DESC) AS 'rank'
 FROM users
 LEFT JOIN messages ON users.id = messages.from_user_id
-ORDER BY cnt DESC;
+GROUP BY users.id;
    
 /*Выберите все сообщения, отсортируйте сообщения по возрастанию даты отправления
 (created_at) и найдите разницу дат отправления между соседними сообщениями, получившегося
