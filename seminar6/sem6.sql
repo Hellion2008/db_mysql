@@ -18,7 +18,7 @@ CREATE PROCEDURE user_friends(id INT)
    -- НЕ РЕШЕНА!!!!!
    
    /*Создание функции, вычисляющей коэфф популярности пользователя (по заявкам на дружбу friend_requests)*/
-   DROP PROCEDURE IF EXISTS rank_user;
+   DROP FUNCTION IF EXISTS rank_user;
    DELIMITER //
    CREATE FUNCTION rank_user(us_id INT)
    RETURNS FLOAT READS SQL DATA
