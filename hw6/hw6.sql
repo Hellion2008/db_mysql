@@ -1,0 +1,20 @@
+DROP TABLE IF EXISTS users_old;
+CREATE TABLE users_old (
+	id SERIAL PRIMARY KEY, -- SERIAL = BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE
+    firstname VARCHAR(50),
+    lastname VARCHAR(50) COMMENT 'Фамилия',
+    email VARCHAR(120) UNIQUE
+);
+
+DROP PROCEDURE IF EXISTS add_user;
+DELIMITER //
+CREATE PROCEDURE add_user(id_users INT)
+BEGIN
+	START TRANSACTION;
+	INSERT INTO users_old SELECT * FROM users WHERE users.id = id_users;
+	DELETE FROM users WHERE users.id = id_users LIMIT 1;
+	COMMIT;
+	END //
+DELIMITER ;
+
+CALL add_user(10);
